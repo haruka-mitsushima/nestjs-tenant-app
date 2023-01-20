@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  dev-postgres:
+    image: postgres:14.4-alpine
+    container_name: tenant-postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: tenant
+      POSTGRES_PASSWORD: tenant
+      POSTGRES_DB: tenant
+    restart: always
+    networks:
+      - lesson
+networks:
+  lesson:
