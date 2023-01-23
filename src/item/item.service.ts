@@ -25,6 +25,14 @@ export class ItemService {
     });
   }
 
+  async getItemById(id: number): Promise<Item> {
+    return await this.prisma.item.findUnique({
+      where: {
+        id: id,
+      },
+    });
+  }
+
   async updateItemById(dto: UpdateItemDto, id: number): Promise<Item> {
     const item = await this.prisma.item.findUnique({
       where: {
