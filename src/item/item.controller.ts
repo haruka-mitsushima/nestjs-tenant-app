@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { Item } from '@prisma/client';
@@ -12,13 +13,18 @@ import { DeleteItemDto } from './dto/delete-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { ItemService } from './item.service';
 
-@Controller('item')
+@Controller('api/items')
 export class ItemController {
   constructor(private readonly itemService: ItemService) { }
 
   @Get()
   async getItems(): Promise<Item[]> {
     return await this.itemService.getItems();
+  }
+
+  @Get(':id')
+  async getItemById(@Param('id', ParseIntPipe) id: number): Promise<Item> {
+    return await this.itemService.getItemById(id);
   }
 
   @Post()
@@ -34,7 +40,7 @@ export class ItemController {
     return await this.itemService.updateItemById(dto, id);
   }
 
-  @Post('delete/:id')
+  @Patch('delete/:id')
   async deleteItemById(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: DeleteItemDto,
