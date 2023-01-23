@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { Item } from '@prisma/client';
 import { CreateItemDto } from './dto/create-item.dto';
+import { DeleteItemDto } from './dto/delete-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { ItemService } from './item.service';
 
@@ -31,5 +32,13 @@ export class ItemController {
     @Body() dto: UpdateItemDto,
   ): Promise<Item> {
     return await this.itemService.updateItemById(dto, id);
+  }
+
+  @Post('delete/:id')
+  async deleteItemById(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: DeleteItemDto,
+  ): Promise<Item> {
+    return await this.itemService.deleteItemById(dto, id);
   }
 }

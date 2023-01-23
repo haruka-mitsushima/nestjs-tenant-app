@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { Item } from '@prisma/client';
+import { DeleteItemDto } from './dto/delete-item.dto';
 
 @Injectable()
 export class ItemService {
@@ -25,12 +26,30 @@ export class ItemService {
   }
 
   async updateItemById(dto: UpdateItemDto, id: number): Promise<Item> {
-    const task = await this.prisma.item.findUnique({
+    const item = await this.prisma.item.findUnique({
       where: {
         id: id,
       },
     });
-    if (!task) throw new ForbiddenException('更新できません');
+    if (!item) throw new ForbiddenException('更新できません');
+
+    return this.prisma.item.update({
+      where: {
+        id: id,
+      },
+      data: {
+        ...dto,
+      },
+    });
+  }
+
+  async deleteItemById(dto: DeleteItemDto, id: number): Promise<Item> {
+    const item = await this.prisma.item.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (!item) throw new ForbiddenException('更新できません');
 
     return this.prisma.item.update({
       where: {
